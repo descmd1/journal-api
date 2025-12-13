@@ -131,7 +131,8 @@ router.post('/login', [
         message: 'Account has been deactivated. Please contact support.'
       });
     }
-
+// Defensive password check
+    if (!user.password) return res.status(400).json({ success: false, message: 'Invalid credentials' });
     // Validate password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
@@ -144,6 +145,9 @@ router.post('/login', [
     // Update last login
     user.lastLogin = new Date();
     await user.save();
+
+    // Save user safely
+    await user.save({ validateBeforeSave: false }); // Skip required fields validation
 
     // Generate JWT token
     const payload = {
