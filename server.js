@@ -25,8 +25,14 @@ app.use(limiter);
 // CORS configuration
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization'],
   credentials: true
 }));
+
+// Handle preflight for all routes
+app.options('*', cors());
+
 
 // Body parsing middleware
 app.use(express.json({ limit: '50mb' }));
