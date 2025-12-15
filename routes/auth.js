@@ -144,7 +144,7 @@ router.post('/login', [
 
     // Update last login
     user.lastLogin = new Date();
-    await user.save();
+    // await user.save();
 
     // Save user safely
     await user.save({ validateBeforeSave: false }); // Skip required fields validation
